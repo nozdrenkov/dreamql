@@ -2,15 +2,6 @@
 
 DreamQL is a modern, expressive, and minimalist query language for data processing and transformation in distributed environments. Inspired by the best features of SQL, ReScript, OCaml, F#, Elixir, Datalog, Logica, and more, DreamQL aims to provide a powerful yet easy-to-learn syntax for working with data.
 
-## Features
-
-- Concise and expressive syntax
-- Pipe-based data transformation
-- Structural pattern matching
-- Powerful type inference system
-- Inspired by the best features of multiple languages
-- Suitable for distributed data processing
-
 ## Example
 
 ```js
@@ -44,6 +35,19 @@ dashboard_results_json =
 
 dashboard_results_json -> storage.save 'my_datasets.dashboard.json'
 ```
+
+## Features
+
+- Concise and expressive syntax
+- Pipe-based data transformation
+- Structural pattern matching
+- Powerful type inference system
+- Inspired by the best features of multiple languages
+- Suitable for distributed data processing
+
+## Read more:
+
+- [Background](docs/background.md)
 
 ## Getting Started
 
