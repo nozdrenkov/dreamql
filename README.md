@@ -47,7 +47,10 @@ dashboard_results_json -> storage.save 'my_datasets.dashboard.json'
 
 ## Read more:
 
+- [Main](docs/main.md)
 - [Background](docs/background.md)
+- [Inspiration](docs/inspiration.md)
+- [Open Questions](docs/open_questions.md)
 
 ## Getting Started
 
