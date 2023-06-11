@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+package dreamql;
+
+// Everything is expression.
+// Functions are the first-class sitizens.
+
+// Predicate vs arithmetic expr will be check down the stream.
+// Doesn't really have types yet.
+
+// table_name
+message Identifier {
+  string value = 1;
+}
+
+// 3.14
+message Numeric {
+  string value = 1;
+}
+
+// 'Hello'
+message String {
+  string value = 1;
+}
+
+// [1, 2, 3]
+// Array and tuple is the same.
+message List {
+  repeated Expr values = 1;
+}
+
+// {
+//   "6": 5 + 1
+//   name: "Jack"
+// }
+message Dict {
+  message KeyValue {
+    Expr key = 1;
+    Expr value = 2;
+  }
+
+  repeated KeyValue key_value_list = 1;
+}
+
+// -k
+message UnaryOp {
+  enum Op {
+    UNKNOWN = 0;
+    NOT = 1;
+    MINUS = 2;
+    GROUP_BY = 3;
+    SPREAD = 4;
+  }
+
+  Expr expr = 1;
+}
+
+// 2 * 3
+// a == b
+// TODO: maybe bit operations: shifts, xor, etc. Exponentiation.
+message BinaryOp {
+  enum Op {
+    UNKNOWN = 0;
+
+    AND = 1;
+    OR = 2;
+
+    PLUS = 3;
+    MINUS = 4;
+    MUL = 5;
+    DIV = 6;
+
+    LESS = 7;
+    LESS_EQUAL = 8;
+    EQUAL = 9;
+    GREATER_EQUAL = 10;
+    GREATER = 11;
+  }
+
+  Expr left = 1;
+  Expr right = 2;
+  Op op = 3;
+}
+
+message Func {
+  // (a, b) => a + b
+  message Def {
+    repeated Identifier arguments = 1;
+    Expr body = 2;
+  }
+
+  // You should be able to pass functions as values.
+  message Ref {
+    oneof ref {
+      Def def = 1;
+      Identifier identifier = 2;
+    }
+  }
+
+  // print(3, 4, 5)
+  // sum(1, 2)
+  message Call {
+    Ref ref = 1;
+    repeated Expr arguments = 2;
+  }
+}
+
+// sum = 1 + 2
+// TODO: Implement destruction as well.
+message Assign {
+  Identifier identifier = 1;
+  Expr expr = 2;
+}
+
+// {
+//   open std
+//   a = 5
+//   b = 10 + 1
+//   std::to_string(a + b)
+// }
+// It returns last expression.
+// Imports visible only in the block.
+message Block {
+  repeated Expr expressions = 1;
+}
+
+// TODO: case expression.
+// TODO: structural pattern matching.
+// a == b ? 3 : 5
+message If {
+  Expr predicate = 1;
+  Expr true = 2;
+  Expr false = 3;
+}
+
+// Expr
+message Expr {
+  oneof expr {
+    Identifier identifier = 1;
+    Numeric numeric = 2;
+    String string = 3;
+    UnaryOp unary_op = 4;
+    BinaryOp binary_op = 5;
+    Func.Def func_def = 6;
+    Func.Call func_call = 7;
+    Assign assign = 8;
+    List list = 9;
+    Dict dict = 10;
+    Block block = 11;
+    If if = 12;
+  }
+}
